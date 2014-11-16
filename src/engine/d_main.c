@@ -205,6 +205,9 @@ void D_Display (void)
     boolean			done;
     boolean			wipe;
     boolean			redrawsbar;
+    int test;
+    int tics1;
+    int nowtime1;
 
     if (nodrawers)
 	return;                    // for comparative timing / profiling
@@ -316,13 +319,26 @@ void D_Display (void)
     //NetUpdate ();         // send out any new accumulation
 
 
-    // normal update
+    tics1 = 0;
     if (!wipe)
     {
-	I_FinishUpdate ();              // page flip or blit buffer
-	return;
+      test = I_GetTime (); //- 5;
+
+      //do
+      //{
+	//do  
+	while ( tics1 == 0  )
+	  {
+	      nowtime1 = I_GetTime ();
+	      tics1 = nowtime1 - test;
+	  } 
+	 //} while (!tics1);
+	 // wipestart = nowtime;
+	  I_FinishUpdate ();                      // page flip or blit buffer
+      //} while (!done);
+
+	  return;
     }
-    
     // wipe update
     wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
