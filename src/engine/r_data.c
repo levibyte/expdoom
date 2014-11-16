@@ -5,14 +5,15 @@
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
 //
-// The source is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
 // $Log:$
 //
@@ -22,10 +23,6 @@
 //	generation of lookups, caching, retrieval by name.
 //
 //-----------------------------------------------------------------------------
-
-
-static const char
-rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -45,6 +42,7 @@ rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 #include  <alloca.h>
 #endif
 
+#include <stdint.h>
 
 #include "r_data.h"
 
@@ -87,7 +85,7 @@ typedef struct
     boolean		masked;	
     short		width;
     short		height;
-    void		**columndirectory;	// OBSOLETE
+    int			columndirectory;	// OBSOLETE
     short		patchcount;
     mappatch_t	patches[1];
 } maptexture_t;
@@ -479,13 +477,13 @@ void R_InitTextures (void)
     }
     numtextures = numtextures1 + numtextures2;
 	
-    textures = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecolumnlump = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecolumnofs = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecomposite = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecompositesize = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturewidthmask = Z_Malloc (numtextures*4, PU_STATIC, 0);
-    textureheight = Z_Malloc (numtextures*4, PU_STATIC, 0);
+    textures = Z_Malloc (numtextures * sizeof(texture_t *), PU_STATIC, 0);
+    texturecolumnlump = Z_Malloc (numtextures * sizeof(short *), PU_STATIC, 0);
+    texturecolumnofs = Z_Malloc (numtextures * sizeof(unsigned short *), PU_STATIC, 0);
+    texturecomposite = Z_Malloc (numtextures * sizeof(byte *), PU_STATIC, 0);
+    texturecompositesize = Z_Malloc (numtextures * sizeof(int), PU_STATIC, 0);
+    texturewidthmask = Z_Malloc (numtextures * sizeof(int), PU_STATIC, 0);
+    textureheight = Z_Malloc (numtextures * sizeof(fixed_t), PU_STATIC, 0);
 
     totalwidth = 0;
     
@@ -638,8 +636,8 @@ void R_InitColormaps (void)
     //  256 byte align tables.
     lump = W_GetNumForName("COLORMAP"); 
     length = W_LumpLength (lump) + 255; 
-    colormaps = Z_Malloc (length, PU_STATIC, 0); 
-    colormaps = (byte *)( ((int)colormaps + 255)&~0xff); 
+    colormaps = Z_Malloc (length, PU_STATIC, 0);
+    colormaps = (byte *)( ((uintptr_t)colormaps + 255)&~0xff);
     W_ReadLump (lump,colormaps); 
 }
 

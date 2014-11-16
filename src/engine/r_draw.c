@@ -5,14 +5,15 @@
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
 //
-// The source is distributed in the hope that it will be useful,
+// This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
 // $Log:$
 //
@@ -22,11 +23,6 @@
 //	 e.g. inline assembly, different algorithms.
 //
 //-----------------------------------------------------------------------------
-
-
-static const char
-rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
-
 
 #include "doomdef.h"
 
@@ -42,6 +38,7 @@ rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 // State.
 #include "doomstat.h"
 
+#include <stdint.h>
 
 // ?
 #define MAXWIDTH			1120
@@ -461,7 +458,7 @@ void R_InitTranslationTables (void)
     int		i;
 	
     translationtables = Z_Malloc (256*3+255, PU_STATIC, 0);
-    translationtables = (byte *)(( (int)translationtables + 255 )& ~255);
+    translationtables = (byte *)(( (uintptr_t)translationtables + 255 )& ~255);
     
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)
