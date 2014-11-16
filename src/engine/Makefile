@@ -5,13 +5,13 @@
 # $Log:$
 #
 CC=  gcc  # gcc or g++
-
-CFLAGS=-g -Wall -DNORMALUNIX -DLINUX # -DUSEASM 
+#-fprofile-arcs -ftest-coverage
+CFLAGS= -g -w -DNORMALUNIX -DLINUX -DSNDSRV# -DUSEASM 
 LDFLAGS=-L/usr/X11R6/lib
 LIBS=-lXext -lX11 -lnsl -lm
 
 # subdirectory for objects
-O=linux
+O=../../objs/engine
 
 # not too sophisticated dependency
 OBJS=				\
@@ -77,19 +77,25 @@ OBJS=				\
 		$(O)/info.o				\
 		$(O)/sounds.o
 
-all:	 $(O)/linuxxdoom
+all:	 m $(O)/linuxxdoom
+
+m:
+	rm -rf *~
+	mkdir -p $(O)
 
 clean:
+	rm *~
 	rm -f *.o *~ *.flc
-	rm -f linux/*
+	rm -f ../objs/*
 
 $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
-	-o $(O)/linuxxdoom $(LIBS)
+	-o $(O)/doom.exe $(LIBS)
 
 $(O)/%.o:	%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #############################################################
 #
+#############################################################
 #############################################################
