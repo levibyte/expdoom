@@ -84,9 +84,9 @@ m:
 	mkdir -p $(O)
 
 clean:
-	rm *~
+	rm *~ -rf
 	rm -f *.o *~ *.flc
-	rm -f ../objs/*
+	rm -f $(O)/*
 
 $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
