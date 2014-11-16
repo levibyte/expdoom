@@ -1,0 +1,111 @@
+#!/bin/bash
+
+whattodo=$1
+whattoplay=$2
+
+prgname=`basename $0`
+selfdir=`dirname $0`
+doom_install_dir=`dirname $selfdir`
+doom_exe=$doom_install_dir/objs/doom.exe
+doom_default_args="-3"
+#FIXME this is stupid
+doom_args="$doom_default_args $1 $2 $3 $4 $5 $6 $7 $8 $9"
+doom_invocation="$doom_exe $doom_args"
+
+all_wads_dir=$doom_install_dir/wads
+workdir=$HOME/.doom
+
+usage_str="$prgname: FIXME"
+function usage
+{
+	echo
+	echo
+	echo $usage_str
+
+}
+
+function err
+{
+	echo "ERROR: $1"
+	usage
+	exit -1
+
+}
+
+function check_dir
+{
+	if [ ! -d $1 ]; then
+		err "Can't find $1. Installation is incomplete"
+	fi
+}
+
+function check_installation
+{	
+	check_dir $doom_install_dir
+	check_dir $all_wads_dir
+
+}
+
+function check
+{
+	if [ "$DISPLAY" == "" ]; then
+		err "No \$DISPLAY set."
+	fi
+
+	check_installation
+}
+
+function config_game
+{	
+	rm -rf $workdir &> /dev/null
+	mkdir $workdir 
+        #ln -s $doom_install_dir/sndserv/linux/sndserver $workdir/sndserver
+        #ln -s ~/Downloads/xdoom/xdoomsrc/sndserv/linux-x86/sndserver $workdir/sndserver
+	
+        export DOOMWADDIR=$workdir
+        fl=$all_wads_dir/$1
+	if [ ! -f $fl ]; then
+		err "Can't find $fl. Please check. "
+	fi
+	cp $fl $workdir
+	#$workdir/sndserver
+	#exit
+
+}
+
+
+#if [ "$whattodo" == ""] && [ "$whattoplay" == ""]; then
+#	config_game "doom1"
+#	game=$doom_exe
+#
+#fi
+
+#FIXME
+check
+config_game "doom2.wad"
+start_game=$doom_invocation
+
+
+#if [ "$whattodo" == "-g"]; then
+#	start_game="gdb -ex r --args $doom_invocation"	
+#fi
+start_game="gdb -ex r --args $doom_invocation"	
+
+echo "Invoking: $start_game"
+$start_game
+
+
+#doom doom2.wad --debug
+#doom --debug
+#doom doom2.wad
+#doom doom2.wad -nomonsters
+#doom --debug -nomonsters -file doom2.wad
+
+
+
+
+
+
+
+
+
