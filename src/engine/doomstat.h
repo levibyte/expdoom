@@ -212,7 +212,7 @@ extern	int		gametic;
 extern	player_t	players[MAXPLAYERS];
 
 // Alive? Disconnected?
-extern  boolean		playeringame[MAXPLAYERS];
+boolean		playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.

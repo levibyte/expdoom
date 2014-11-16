@@ -115,7 +115,7 @@ boolean         viewactive;
  
 boolean         deathmatch;           	// only if started as net death 
 boolean         netgame;                // only true if packets are broadcast 
-boolean         playeringame[MAXPLAYERS]; 
+//boolean         playeringame[MAXPLAYERS]; 
 player_t        players[MAXPLAYERS]; 
  
 int             consoleplayer;          // player taking events and displaying 
@@ -603,6 +603,8 @@ boolean G_Responder (event_t* ev)
 // G_Ticker
 // Make ticcmd_ts for the players.
 //
+//	static int veryfirsttime = 1;
+
 void G_Ticker (void) 
 { 
     int		i;
@@ -610,9 +612,16 @@ void G_Ticker (void)
     ticcmd_t*	cmd;
     
     // do player reborns if needed
-    for (i=0 ; i<MAXPLAYERS ; i++) 
-	if (playeringame[i] && players[i].playerstate == PST_REBORN) 
-	    G_DoReborn (i);
+    //for (i=0 ; i<MAXPLAYERS ; i++) 
+	//if (playeringame[i] && players[i].playerstate == PST_REBORN) 
+	  //  G_DoReborn (i);
+	
+    //if ( veryfirsttime == 1 ) {
+    //veryfirsttime = 0;
+    //G_DoReborn (players[consoleplayer]);
+      
+    //}
+
     
     // do things to change the game state
     while (gameaction != ga_nothing) 
@@ -840,7 +849,7 @@ void G_PlayerReborn (int player)
 // at the given mapthing_t spot  
 // because something is occupying it 
 //
-void P_SpawnPlayer (mapthing_t* mthing); 
+void P_Spr1 (mapthing_t* mthing); 
  
 boolean
 G_CheckSpot
@@ -1355,8 +1364,15 @@ void G_DoNewGame (void)
     fastparm = false;
     nomonsters = false;
     consoleplayer = 0;
+    playeringame[0] = playeringame[1] = playeringame[2] = playeringame[3] = true;
+    //playeringame[2] = true;
     G_InitNew (d_skill, d_episode, d_map); 
     gameaction = ga_nothing; 
+    //G_InitPlayer(consoleplayer);
+    //ST_Start();
+    //HU_Start();
+
+  
 } 
 
 // The sky texture to be used instead of the F_SKY1 dummy.

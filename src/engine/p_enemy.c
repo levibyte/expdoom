@@ -507,6 +507,7 @@ P_LookForPlayers
     angle_t	an;
     fixed_t	dist;
 		
+    
     sector = actor->subsector->sector;
 	
     c = 0;
@@ -514,7 +515,8 @@ P_LookForPlayers
 	
     for ( ; ; actor->lastlook = (actor->lastlook+1)&3 )
     {
-	if (!playeringame[actor->lastlook])
+	//don't know what that means
+         if (!playeringame[actor->lastlook])
 	    continue;
 			
 	if (c++ == 2
@@ -525,7 +527,8 @@ P_LookForPlayers
 	}
 	
 	player = &players[actor->lastlook];
-
+        //if (! player->mo) return;
+ 
 	if (player->health <= 0)
 	    continue;		// dead
 

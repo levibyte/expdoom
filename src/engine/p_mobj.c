@@ -691,7 +691,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	    p->cards[i] = true;
 			
     if (mthing->type-1 == consoleplayer)
-    {
+   {
 	// wake up the status bar
 	ST_Start ();
 	// wake up the heads up text
