@@ -313,7 +313,7 @@ void D_Display (void)
 
     // menus go directly to the screen
     M_Drawer ();          // menu is drawn even on top of everything
-    NetUpdate ();         // send out any new accumulation
+    //NetUpdate ();         // send out any new accumulation
 
 
     // normal update
@@ -372,22 +372,22 @@ void D_DoomLoop (void)
 	I_StartFrame ();                
 	
 	// process one or more tics
-	if (singletics)
-	{
+	//if (singletics)
+	//{
 	    I_StartTic ();
 	    D_ProcessEvents ();
-	    G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
+	    G_BuildTiccmd (&(players[consoleplayer].cmd));
 	    if (advancedemo)
 		D_DoAdvanceDemo ();
 	    M_Ticker ();
 	    G_Ticker ();
 	    gametic++;
-	    maketic++;
-	}
-	else
-	{
-	    TryRunTics (); // will run at least one tic
-	}
+	    //maketic++;
+	//}
+	//else
+	//{
+	  //  TryRunTics (); // will run at least one tic
+	//}
 		
 	S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
@@ -1100,8 +1100,8 @@ void D_DoomMain (void)
     printf ("I_Init: Setting up machine state.\n");
     I_Init ();
 
-    printf ("D_CheckNetGame: Checking network game status.\n");
-    D_CheckNetGame ();
+    //printf ("D_CheckNetGame: Checking network game status.\n");
+    //D_CheckNetGame ();
 
     printf ("S_Init: Setting up sound.\n");
     S_Init (snd_SfxVolume /* *8 */, snd_MusicVolume /* *8*/ );

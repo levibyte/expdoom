@@ -31,7 +31,7 @@
 // We need globally shared data structures,
 //  for defining the global state variables.
 #include "doomdata.h"
-#include "d_net.h"
+//#include "d_net.h"
 
 // We need the playr data structure as well.
 #include "d_player.h"
@@ -271,19 +271,19 @@ extern int		skyflatnum;
 // Netgame stuff (buffers and pointers, i.e. indices).
 
 // This is ???
-extern  doomcom_t*	doomcom;
+//extern  doomcom_t*	doomcom;
 
 // This points inside doomcom.
-extern  doomdata_t*	netbuffer;	
+//extern  doomdata_t*	netbuffer;	
 
 
-extern  ticcmd_t	localcmds[BACKUPTICS];
+//extern  ticcmd_t	localcmds[BACKUPTICS];
 extern	int		rndindex;
 
 extern	int		maketic;
-extern  int             nettics[MAXNETNODES];
+//extern  int             nettics[MAXNETNODES];
 
-extern  ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
+//extern  ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 extern	int		ticdup;
 
 

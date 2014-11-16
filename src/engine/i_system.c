@@ -37,7 +37,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include "i_video.h"
 #include "i_sound.h"
 
-#include "d_net.h"
+//#include "d_net.h"
 #include "g_game.h"
 
 #ifdef __GNUG__
@@ -115,7 +115,7 @@ void I_Init (void)
 //
 void I_Quit (void)
 {
-    D_QuitNetGame ();
+    //D_QuitNetGame ();
     I_ShutdownSound();
     I_ShutdownMusic();
     M_SaveDefaults ();
@@ -176,7 +176,7 @@ void I_Error (char *error, ...)
     if (demorecording)
 	G_CheckDemoStatus();
 
-    D_QuitNetGame ();
+    //D_QuitNetGame ();
     I_ShutdownGraphics();
     
     exit(-1);

@@ -137,7 +137,7 @@ boolean         precache = true;        // if true, load all graphics at start
  
 wbstartstruct_t wminfo;               	// parms for world map / intermission 
  
-short		consistancy[MAXPLAYERS][BACKUPTICS]; 
+//short		consistancy[MAXPLAYERS][BACKUPTICS]; 
  
 byte*		savebuffer;
  
@@ -243,14 +243,15 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     int		tspeed; 
     int		forward;
     int		side;
-    
+    int 	ticdup;
     ticcmd_t*	base;
 
+    ticdup = 20;
     base = I_BaseTiccmd ();		// empty, or external driver
     memcpy (cmd,base,sizeof(*cmd)); 
 	
-    cmd->consistancy = 
-	consistancy[consoleplayer][maketic%BACKUPTICS]; 
+    //cmd->consistancy = 
+	//consistancy[consoleplayer][maketic%BACKUPTICS]; 
 
  
     strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] 
@@ -653,7 +654,8 @@ void G_Ticker (void)
     
     // get commands, check consistancy,
     // and build new consistancy check
-    buf = (gametic/ticdup)%BACKUPTICS; 
+    //buf = (gametic/ticdup)%BACKUPTICS; 
+    /*buf = (gametic/ticdup); 
  
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
@@ -722,7 +724,7 @@ void G_Ticker (void)
 	    } 
 	}
     }
-    
+    */
     // do main actions
     switch (gamestate) 
     { 

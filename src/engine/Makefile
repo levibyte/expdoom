@@ -21,12 +21,10 @@ OBJS=				\
 		$(O)/i_system.o		\
 		$(O)/i_sound.o		\
 		$(O)/i_video.o		\
-		$(O)/i_net.o			\
 		$(O)/tables.o			\
 		$(O)/f_finale.o		\
 		$(O)/f_wipe.o 		\
 		$(O)/d_main.o			\
-		$(O)/d_net.o			\
 		$(O)/d_items.o		\
 		$(O)/g_game.o			\
 		$(O)/m_menu.o			\
