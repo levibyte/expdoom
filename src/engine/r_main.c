@@ -896,3 +896,4 @@ void R_RenderPlayerView (player_t* player)
     // Check for new console commands.
     //NetUpdate ();				
 }
+

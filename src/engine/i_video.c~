@@ -516,7 +516,7 @@ void I_FinishUpdate(void)
 	const unsigned int	step = 2 * X_width / 4;
 
 	ilineptr = (unsigned int *) (screens[0]);
-	for (i = 0; i < 3; i++) olineptrs[i] = (unsigned int *) &image->data[i * X_width];
+//	for (i = 0; i < 3; i++) olineptrs[i] = (unsigned int *) &image->data[i * X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
