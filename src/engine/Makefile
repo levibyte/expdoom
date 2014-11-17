@@ -6,7 +6,7 @@
 #
 CC=  gcc  # gcc or g++
 #-fprofile-arcs -ftest-coverage
-CFLAGS= -g -w -DNORMALUNIX -DLINUX -DSNDSRV# -DUSEASM 
+CFLAGS= -g -DNORMALUNIX -DLINUX -DSNDSRV# -DUSEASM 
 LDFLAGS=-L/usr/X11R6/lib
 LIBS=-lXext -lX11 -lnsl -lm
 
