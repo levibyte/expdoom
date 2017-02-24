@@ -508,6 +508,30 @@ void I_StartFrame(void)
 //
 void I_FinishUpdate(void)
 {
+    static int	lasttic;
+    int		tics;
+    int		i;
+
+    // draws little dots on the bottom of the screen, a simple fps meter
+    if (devparm)
+    {
+	i = I_GetTime();
+	tics = i - lasttic;
+	lasttic = i;
+	if (tics > 20) tics = 20;
+
+	for (i = 0; i < tics * 2; i += 2)
+	    screens[0][(SCREENHEIGHT - 2) * SCREENWIDTH + i + 3] = 0xff;
+	for (; i < 20 * 2; i += 2)
+	    screens[0][(SCREENHEIGHT - 2) * SCREENWIDTH + i + 3] = 0x0;
+    }
+
+    // Special optimization for 16bpp and screen size * 2, because this
+    // probably is the most used one. This code does the scaling
+    // and colormap transformation in one single loop instead of two,
+    // which halves the time needed for the transformations.
+    if (multiply == 3)
+    {
 	unsigned int		*olineptrs[3];
 	const unsigned int	*ilineptr;
 	int			x, y, i;
@@ -516,7 +540,8 @@ void I_FinishUpdate(void)
 	const unsigned int	step = 2 * X_width / 4;
 
 	ilineptr = (unsigned int *) (screens[0]);
-	for (i = 0; i < 3; i++) olineptrs[i] = (unsigned int *) &image->data[i * X_width];
+	for (i = 0; i < 3; i++)
+	    olineptrs[i] = (unsigned int *) &image->data[i * X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
@@ -525,9 +550,15 @@ void I_FinishUpdate(void)
 	    do
 	    {
 		fouripixels = *ilineptr++;
-		fouropixels[0] = (fouripixels & 0xff000000) |((fouripixels >> 8) & 0xff0000)  |((fouripixels >> 16) & 0xffff);
-		fouropixels[1] = ((fouripixels << 8) & 0xff000000) | (fouripixels & 0xffff00) |((fouripixels >> 8) & 0xff);
-		fouropixels[2] = ((fouripixels << 16) & 0xffff0000) | ((fouripixels << 8) & 0xff00) | (fouripixels & 0xff);
+		fouropixels[0] = (fouripixels & 0xff000000)
+		    |	((fouripixels >> 8) & 0xff0000)
+		    |	((fouripixels >> 16) & 0xffff);
+		fouropixels[1] = ((fouripixels << 8) & 0xff000000)
+		    |	(fouripixels & 0xffff00)
+		    |	((fouripixels >> 8) & 0xff);
+		fouropixels[2] = ((fouripixels << 16) & 0xffff0000)
+		    |	((fouripixels << 8) & 0xff00)
+		    |	(fouripixels & 0xff);
 
 		*olineptrs[0]++ = fouropixels[2];
 		*olineptrs[1]++ = fouropixels[2];
@@ -545,9 +576,9 @@ void I_FinishUpdate(void)
 	    olineptrs[2] += step;
 	}
 
-    
+    }
 
-/*
+
     if (x_bpp == 4)
     {
       int			x, y;
@@ -559,7 +590,10 @@ void I_FinishUpdate(void)
       while (y--)
       {
 	olineptr =  (unsigned int *) &(image->data[y * X_width * x_bpp]);
-        ilineptr =  (unsigned char *)&(image->data[y * X_width]);
+	if (multiply == 1)
+	  ilineptr = (unsigned char *)(screens[0] + y * X_width);
+	else
+	  ilineptr =  (unsigned char *)&(image->data[y * X_width]);
 	x = xstart;
 	do
 	{
@@ -567,7 +601,6 @@ void I_FinishUpdate(void)
 	} while (x--);
       }
     }
-/**/
 
     if (doShm)
     {
