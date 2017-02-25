@@ -1,19 +1,23 @@
 #!/bin/bash
 
+workdir=$HOME/.doom
+
 whattodo=$1
 whattoplay=$2
 
 prgname=`basename $0`
 selfdir=`dirname $0`
 doom_install_dir=`dirname $selfdir`
-doom_exe=$doom_install_dir/objs/engine/doom.exe
+
+obj_doom_exe=$doom_install_dir/objs/engine/doom.exe
+doom_exe=$workdir/doom.exe
+
 doom_default_args="-3"
 #FIXME , this is stupid
 doom_args="$doom_default_args $1 $2 $3 $4 $5 $6 $7 $8 $9"
 doom_invocation="$doom_exe $doom_args"
 
 all_wads_dir=$doom_install_dir/wads
-workdir=$HOME/.doom
 
 usage_str="$prgname: FIXME"
 function usage
@@ -50,7 +54,7 @@ function check_installation
 {	
 	check_dir $doom_install_dir
 	check_dir $doom_wads_dir
-	check_file $doom_exe
+	check_file $obj_doom_exe
 }
 
 function check
@@ -66,8 +70,16 @@ function config_game
 {	
 	rm -rf $workdir &> /dev/null
 	mkdir $workdir 
-        #ln -s $doom_install_dir/objs/sndserv/sndserver $workdir/sndserver
+        #ln -s $doom_install_dir/objs/sndserv/sndserver $workdir/sndserver 
+	cp $doom_install_dir/objs/sndserv/sndserver $workdir/sndserver.exe 
+	cp $obj_doom_exe $doom_exe
 	
+
+	#workaround for ASLA -> OSS
+	echo "#!/bin/bash" > $workdir/sndserver
+        echo "padsp $workdir/sndserver.exe &> /dev/null " >> $workdir/sndserver
+	chmod 777 $workdir/sndserver
+
         export DOOMWADDIR=$workdir
         fl=$all_wads_dir/$1
 	if [ ! -f $fl ]; then
